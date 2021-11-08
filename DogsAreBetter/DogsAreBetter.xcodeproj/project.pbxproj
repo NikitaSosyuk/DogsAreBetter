@@ -14,6 +14,12 @@
 		3C3A740C2739B51F00574388 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C3A740A2739B51F00574388 /* LaunchScreen.storyboard */; };
 		3C3A74142739B87000574388 /* UIColor+External.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A74132739B87000574388 /* UIColor+External.swift */; };
 		3C3A741A2739BF0800574388 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3C3A74192739BF0800574388 /* SnapKit */; };
+		3C3A741C2739C34900574388 /* UITextView+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A741B2739C34900574388 /* UITextView+Center.swift */; };
+		3C3A74232739C46A00574388 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A74222739C46A00574388 /* RootViewModel.swift */; };
+		3C3A74262739C67C00574388 /* CatFact .swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A74252739C67C00574388 /* CatFact .swift */; };
+		3C3A74282739C6B300574388 /* DogMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A74272739C6B300574388 /* DogMessage.swift */; };
+		3C3A742A2739D48C00574388 /* UIControlPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3A74292739D48C00574388 /* UIControlPublisher.swift */; };
+		3C3A742D2739D64000574388 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 3C3A742C2739D64000574388 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +31,11 @@
 		3C3A740B2739B51F00574388 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3C3A740D2739B51F00574388 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C3A74132739B87000574388 /* UIColor+External.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+External.swift"; sourceTree = "<group>"; };
+		3C3A741B2739C34900574388 /* UITextView+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Center.swift"; sourceTree = "<group>"; };
+		3C3A74222739C46A00574388 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		3C3A74252739C67C00574388 /* CatFact .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CatFact .swift"; sourceTree = "<group>"; };
+		3C3A74272739C6B300574388 /* DogMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogMessage.swift; sourceTree = "<group>"; };
+		3C3A74292739D48C00574388 /* UIControlPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlPublisher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C3A742D2739D64000574388 /* Kingfisher in Frameworks */,
 				3C3A741A2739BF0800574388 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,12 +70,13 @@
 		3C3A73FE2739B51D00574388 /* DogsAreBetter */ = {
 			isa = PBXGroup;
 			children = (
+				3C3A741D2739C44900574388 /* Modules */,
 				3C3A74162739BBB000574388 /* Lifecycle */,
-				3C3A74032739B51D00574388 /* RootViewController.swift */,
 				3C3A74082739B51F00574388 /* Assets.xcassets */,
 				3C3A740A2739B51F00574388 /* LaunchScreen.storyboard */,
 				3C3A740D2739B51F00574388 /* Info.plist */,
 				3C3A74152739BB0E00574388 /* Extensions */,
+				3C3A74292739D48C00574388 /* UIControlPublisher.swift */,
 			);
 			path = DogsAreBetter;
 			sourceTree = "<group>";
@@ -72,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				3C3A74132739B87000574388 /* UIColor+External.swift */,
+				3C3A741B2739C34900574388 /* UITextView+Center.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -83,6 +97,49 @@
 				3C3A74012739B51D00574388 /* SceneDelegate.swift */,
 			);
 			path = Lifecycle;
+			sourceTree = "<group>";
+		};
+		3C3A741D2739C44900574388 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A741E2739C44F00574388 /* Root */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		3C3A741E2739C44F00574388 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74242739C67000574388 /* Model */,
+				3C3A74202739C45A00574388 /* ViewModel */,
+				3C3A741F2739C45500574388 /* View */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		3C3A741F2739C45500574388 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74032739B51D00574388 /* RootViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3C3A74202739C45A00574388 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74222739C46A00574388 /* RootViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3C3A74242739C67000574388 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74252739C67C00574388 /* CatFact .swift */,
+				3C3A74272739C6B300574388 /* DogMessage.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -103,6 +160,7 @@
 			name = DogsAreBetter;
 			packageProductDependencies = (
 				3C3A74192739BF0800574388 /* SnapKit */,
+				3C3A742C2739D64000574388 /* Kingfisher */,
 			);
 			productName = DogsAreBetter;
 			productReference = 3C3A73FC2739B51D00574388 /* DogsAreBetter.app */;
@@ -134,6 +192,7 @@
 			mainGroup = 3C3A73F32739B51D00574388;
 			packageReferences = (
 				3C3A74182739BF0800574388 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				3C3A742B2739D64000574388 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 3C3A73FD2739B51D00574388 /* Products */;
 			projectDirPath = "";
@@ -161,10 +220,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C3A74262739C67C00574388 /* CatFact .swift in Sources */,
 				3C3A74142739B87000574388 /* UIColor+External.swift in Sources */,
+				3C3A74282739C6B300574388 /* DogMessage.swift in Sources */,
 				3C3A74042739B51D00574388 /* RootViewController.swift in Sources */,
 				3C3A74002739B51D00574388 /* AppDelegate.swift in Sources */,
+				3C3A741C2739C34900574388 /* UITextView+Center.swift in Sources */,
+				3C3A74232739C46A00574388 /* RootViewModel.swift in Sources */,
 				3C3A74022739B51D00574388 /* SceneDelegate.swift in Sources */,
+				3C3A742A2739D48C00574388 /* UIControlPublisher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,6 +448,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		3C3A742B2739D64000574388 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -391,6 +463,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3C3A74182739BF0800574388 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		3C3A742C2739D64000574388 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C3A742B2739D64000574388 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

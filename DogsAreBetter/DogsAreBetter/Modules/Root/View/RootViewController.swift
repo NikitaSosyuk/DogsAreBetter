@@ -7,7 +7,9 @@
 
 import UIKit
 import Combine
+
 import SnapKit
+import Kingfisher
 
 final class RootViewController: UIViewController {
 
@@ -26,6 +28,10 @@ final class RootViewController: UIViewController {
         static let scoreLabelInsets = UIEdgeInsets(top: 19, left: 22, bottom: 0, right: 38)
     }
 
+    // MARK: - Internal Properties
+
+    var viewModel: RootViewModel?
+
     // MARK: - Private Properties
 
     private let segmentedControl: UISegmentedControl = {
@@ -36,17 +42,18 @@ final class RootViewController: UIViewController {
     }()
 
     private let contentTextView: UITextView = {
-        let view = UITextView()
-        view.layer.borderWidth = Constants.contentViewsBorderWidth
-        view.layer.cornerRadius = Constants.contentViewsCornerRadius
-        return view
+        let textView = UITextView()
+        textView.text = "iOS is the best 🥺"
+        textView.setCenteredText()
+        textView.layer.borderWidth = Constants.contentViewsBorderWidth
+        textView.layer.cornerRadius = Constants.contentViewsCornerRadius
+        return textView
     }()
 
     private let contentImageView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleToFill
-        view.layer.masksToBounds = false
         view.layer.borderWidth = Constants.contentViewsBorderWidth
         view.layer.cornerRadius = Constants.contentViewsCornerRadius
         return view
@@ -66,7 +73,13 @@ final class RootViewController: UIViewController {
         return label
     }()
 
-    private var cancellable = Set<AnyCancellable>()
+
+    @Published
+    private var catFact = CatFact(fact: "none.")
+    @Published
+    private var dogMessage = DogMessage(message: "none.")
+
+    private var cancellableSet = Set<AnyCancellable>()
 
     // MARK: - Lifecycle
 
@@ -76,7 +89,14 @@ final class RootViewController: UIViewController {
         self.addSubviews()
         self.setupConstraints()
         self.setupNavigationBar()
+        self.setupSubscribers()
         self.view.backgroundColor = .white
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        self.contentTextView.setCenteredText()
     }
 
     // MARK: - Private Methods
@@ -112,9 +132,9 @@ final class RootViewController: UIViewController {
 
         self.moreButton.snp.makeConstraints { make in
             make.height.equalTo(Constants.moreButtonHeight)
+            make.top.equalTo(contentImageView.snp.bottom).offset(13)
             make.leading.equalToSuperview().offset(Constants.moreButtonInsets.left)
             make.trailing.equalToSuperview().inset(Constants.moreButtonInsets.right)
-            make.top.equalTo(contentImageView.snp.bottom).offset(13)
         }
 
         self.scoreLabel.snp.makeConstraints { make in
@@ -127,6 +147,69 @@ final class RootViewController: UIViewController {
     private func setupNavigationBar() {
         self.title = "Cats and dogs"
         self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+
+    private func setupSubscribers() {
+        self.segmentedControl
+            .publisher(for: \.selectedSegmentIndex)
+            .sink { value in
+                switch value {
+                case 0:
+                    self.viewModel?.downloadCatRandomFact()
+                    self.contentTextView.isHidden = false
+                    self.contentImageView.isHidden = true
+                case 1:
+                    self.viewModel?.downloadDogRandomImage()
+                    self.contentTextView.isHidden = true
+                    self.contentImageView.isHidden = false
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellableSet)
+
+        self.moreButton.publisher(for: .touchUpInside)
+            .sink { _ in
+                switch self.segmentedControl.selectedSegmentIndex {
+                case 0:
+                    self.viewModel?.downloadCatRandomFact()
+                    // self.catsCount += 1
+                case 1:
+                    self.viewModel?.downloadDogRandomImage()
+                    // self.dogsCount += 1
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellableSet)
+
+        viewModel?.$dog
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: {  _ in },
+                receiveValue: { dog in
+                    guard
+                        let dog = dog,
+                        let imageURL = URL(string: dog.message)
+                    else { return }
+
+                    self.contentImageView.kf.setImage(with: imageURL)
+                }
+            )
+            .store(in: &cancellableSet)
+
+        viewModel?.$cat
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: {  _ in },
+                receiveValue: { cat in
+                    guard let cat = cat else { return }
+
+                    self.contentTextView.text = cat.fact
+                    self.contentTextView.setCenteredText()
+                }
+            )
+            .store(in: &cancellableSet)
     }
 }
 
