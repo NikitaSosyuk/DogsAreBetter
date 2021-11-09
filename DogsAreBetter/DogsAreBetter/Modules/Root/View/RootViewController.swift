@@ -44,19 +44,21 @@ final class RootViewController: UIViewController {
     private let contentTextView: UITextView = {
         let textView = UITextView()
         textView.text = "iOS is the best 🥺"
-        textView.setCenteredText()
+        textView.isEditable = false
+        textView.isSelectable = false
+        textView.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         textView.layer.borderWidth = Constants.contentViewsBorderWidth
         textView.layer.cornerRadius = Constants.contentViewsCornerRadius
         return textView
     }()
 
     private let contentImageView: UIImageView = {
-        let view = UIImageView()
-        view.clipsToBounds = true
-        view.contentMode = .scaleToFill
-        view.layer.borderWidth = Constants.contentViewsBorderWidth
-        view.layer.cornerRadius = Constants.contentViewsCornerRadius
-        return view
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleToFill
+        imageView.layer.borderWidth = Constants.contentViewsBorderWidth
+        imageView.layer.cornerRadius = Constants.contentViewsCornerRadius
+        return imageView
     }()
 
     private let moreButton: UIButton = {
@@ -86,11 +88,13 @@ final class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = .white
+
         self.addSubviews()
         self.setupConstraints()
         self.setupNavigationBar()
-        self.setupSubscribers()
-        self.view.backgroundColor = .white
+        self.sinkUI()
+        self.sinkViewModel()
     }
 
     override func viewDidLayoutSubviews() {
@@ -138,8 +142,8 @@ final class RootViewController: UIViewController {
         }
 
         self.scoreLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(Constants.scoreLabelInsets.left)
-            make.trailing.equalToSuperview().inset(Constants.scoreLabelInsets.right)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(Constants.scoreLabelHeight)
             make.top.equalTo(self.moreButton.snp.bottom).offset(Constants.scoreLabelInsets.top)
         }
     }
@@ -147,39 +151,22 @@ final class RootViewController: UIViewController {
     private func setupNavigationBar() {
         self.title = "Cats and dogs"
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetButtonAction))
+
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.largeTitleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 34, weight: .bold),
+            .foregroundColor: UIColor.label
+        ]
+        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
 
-    private func setupSubscribers() {
-        self.segmentedControl
-            .publisher(for: \.selectedSegmentIndex)
-            .sink { value in
-                switch value {
-                case 0:
-                    self.viewModel?.downloadCatRandomFact()
-                    self.contentTextView.isHidden = false
-                    self.contentImageView.isHidden = true
-                case 1:
-                    self.viewModel?.downloadDogRandomImage()
-                    self.contentTextView.isHidden = true
-                    self.contentImageView.isHidden = false
-                default:
-                    break
-                }
-            }
-            .store(in: &cancellableSet)
-
-        self.moreButton.publisher(for: .touchUpInside)
-            .sink { _ in
-                switch self.segmentedControl.selectedSegmentIndex {
-                case 0:
-                    self.viewModel?.downloadCatRandomFact()
-                    // self.catsCount += 1
-                case 1:
-                    self.viewModel?.downloadDogRandomImage()
-                    // self.dogsCount += 1
-                default:
-                    break
-                }
+    private func sinkViewModel() {
+        viewModel?.$scores
+            .receive(on: DispatchQueue.main)
+            .sink { scoreTuple in
+                self.scoreLabel.text = "Score: \(scoreTuple.catScore) cats and \(scoreTuple.dogScore) dogs"
             }
             .store(in: &cancellableSet)
 
@@ -210,6 +197,43 @@ final class RootViewController: UIViewController {
                 }
             )
             .store(in: &cancellableSet)
+    }
+
+    private func sinkUI() {
+        self.segmentedControl
+            .publisher(for: \.selectedSegmentIndex)
+            .sink { value in
+                switch value {
+                case 0:
+                    self.viewModel?.downloadCatRandomFact()
+                    self.contentTextView.isHidden = false
+                    self.contentImageView.isHidden = true
+                case 1:
+                    self.viewModel?.downloadDogRandomImage()
+                    self.contentTextView.isHidden = true
+                    self.contentImageView.isHidden = false
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellableSet)
+
+        self.moreButton.publisher(for: .touchUpInside)
+            .sink { _ in
+                switch self.segmentedControl.selectedSegmentIndex {
+                case 0:
+                    self.viewModel?.downloadCatRandomFact()
+                case 1:
+                    self.viewModel?.downloadDogRandomImage()
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellableSet)
+    }
+
+    @objc private func resetButtonAction() {
+        viewModel?.resetScores()
     }
 }
 

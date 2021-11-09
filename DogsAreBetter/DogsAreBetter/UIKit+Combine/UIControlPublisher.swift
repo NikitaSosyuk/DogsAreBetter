@@ -8,6 +8,19 @@
 import UIKit
 import Combine
 
+// Copyright by StackOverFlow 2021
+
+protocol CombineCompatible { }
+
+extension UIControl: CombineCompatible { }
+
+extension CombineCompatible where Self: UIControl {
+    func publisher(for events: UIControl.Event) -> UIControlPublisher<UIControl> {
+        return UIControlPublisher(control: self, events: events)
+    }
+}
+
+
 final class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl>: Subscription where SubscriberType.Input == Control {
     private var subscriber: SubscriberType?
     private let control: Control
@@ -19,8 +32,6 @@ final class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl
     }
 
     func request(_ demand: Subscribers.Demand) {
-        // We do nothing here as we only want to send events when they occur.
-        // See, for more info: https://developer.apple.com/documentation/combine/subscribers/demand
     }
 
     func cancel() {
@@ -48,14 +59,5 @@ struct UIControlPublisher<Control: UIControl>: Publisher {
     func receive<S>(subscriber: S) where S : Subscriber, S.Failure == UIControlPublisher.Failure, S.Input == UIControlPublisher.Output {
         let subscription = UIControlSubscription(subscriber: subscriber, control: control, event: controlEvents)
         subscriber.receive(subscription: subscription)
-    }
-}
-
-
-protocol CombineCompatible { }
-extension UIControl: CombineCompatible { }
-extension CombineCompatible where Self: UIControl {
-    func publisher(for events: UIControl.Event) -> UIControlPublisher<UIControl> {
-        return UIControlPublisher(control: self, events: events)
     }
 }

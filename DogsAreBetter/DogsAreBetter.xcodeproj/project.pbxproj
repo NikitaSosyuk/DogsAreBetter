@@ -70,13 +70,12 @@
 		3C3A73FE2739B51D00574388 /* DogsAreBetter */ = {
 			isa = PBXGroup;
 			children = (
+				3C3A740D2739B51F00574388 /* Info.plist */,
 				3C3A741D2739C44900574388 /* Modules */,
 				3C3A74162739BBB000574388 /* Lifecycle */,
-				3C3A74082739B51F00574388 /* Assets.xcassets */,
-				3C3A740A2739B51F00574388 /* LaunchScreen.storyboard */,
-				3C3A740D2739B51F00574388 /* Info.plist */,
+				3C3A7457273AA6AC00574388 /* Resources */,
+				3C3A7456273AA69500574388 /* UIKit+Combine */,
 				3C3A74152739BB0E00574388 /* Extensions */,
-				3C3A74292739D48C00574388 /* UIControlPublisher.swift */,
 			);
 			path = DogsAreBetter;
 			sourceTree = "<group>";
@@ -140,6 +139,23 @@
 				3C3A74272739C6B300574388 /* DogMessage.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3C3A7456273AA69500574388 /* UIKit+Combine */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74292739D48C00574388 /* UIControlPublisher.swift */,
+			);
+			path = "UIKit+Combine";
+			sourceTree = "<group>";
+		};
+		3C3A7457273AA6AC00574388 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3C3A74082739B51F00574388 /* Assets.xcassets */,
+				3C3A740A2739B51F00574388 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

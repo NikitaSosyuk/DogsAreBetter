@@ -18,6 +18,9 @@ final class RootViewModel {
     @Published
     var cat: CatFact?
 
+    @Published
+    var scores: (dogScore: Int, catScore: Int) = (0, 0)
+
     // MARK: - Private Properties
 
     private let catRandomFactURL = URL(string: "https://catfact.ninja/fact")! // this is fine 🙂
@@ -43,6 +46,7 @@ final class RootViewModel {
                 receiveCompletion: { _ in },
                 receiveValue: { cat in
                     self.cat = cat
+                    self.scores.catScore += 1
                 }
             )
             .store(in: &cancellableSet)
@@ -62,8 +66,13 @@ final class RootViewModel {
                 receiveCompletion: { _ in },
                 receiveValue: { dog in
                     self.dog = dog
+                    self.scores.dogScore += 1
                 }
             )
             .store(in: &cancellableSet)
+    }
+
+    func resetScores() {
+        self.scores = (0, 0)
     }
 }
